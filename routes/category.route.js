@@ -11,10 +11,10 @@ category.post("/add/blogcategory", adminauth, async (req, res) => {
   try {
      const newCategory = new BlogCategory(req.body);
     const blog = await newCategory.save();
-     res.json({ message: 'Category created successfully' });
+     res.status(201).json({ message: 'Category created successfully' });
   } catch (error) {
     if (error.code === 11000 && error.keyPattern.blogcategoryName) {
-    res.status(400).json({ error: 'Duplicate category name. Please choose a unique name.' });
+    res.status(409).json({ error: 'Duplicate category name. Please choose a unique name.' });
     } else {
      res.status(500).json({ error: 'Internal server error' });
     }
@@ -22,7 +22,7 @@ category.post("/add/blogcategory", adminauth, async (req, res) => {
 });
 
 
-category.get("/blogcategory", async (req, res) => {
+category.get("/blogcategory",adminauth, async (req, res) => {
   try {
     const categories = await  BlogCategory.find();
     res.status(200).json(categories);
@@ -32,7 +32,7 @@ category.get("/blogcategory", async (req, res) => {
   }
 });
 
-category.get("/blogcategories/:id", async (req, res) => {
+category.get("/blogcategories/:id",adminauth, async (req, res) => {
   const categoryId = req.params.id;
   try {
     const category = await  BlogCategory.findById(categoryId);
@@ -46,7 +46,7 @@ category.get("/blogcategories/:id", async (req, res) => {
   }
 });
 
-category.get('/allblogcategoies', async (req, res) => {
+category.get('/allblogcategoies',adminauth, async (req, res) => {
     try {
       const distinctCategories = await BlogCategory.distinct('blogcategoryName');
       res.json({ categories: distinctCategories });
@@ -118,7 +118,7 @@ category.post("/add/prouctcategory", adminauth, async (req, res) => {
   }
 });
 
-category.get("/productcategory", async (req, res) => {
+category.get("/productcategory",adminauth, async (req, res) => {
 try {
   const categories = await  ProductCategory.find();
   res.status(200).json(categories);
@@ -128,7 +128,7 @@ try {
 }
 });
 
-category.get("/productcategories/:id", async (req, res) => {
+category.get("/productcategories/:id",adminauth, async (req, res) => {
 const categoryId = req.params.id;
 try {
   const category = await  ProductCategory.findById(categoryId);
@@ -142,7 +142,7 @@ try {
 }
 });
 
-category.get('/allproductcategoies', async (req, res) => {
+category.get('/allproductcategoies',adminauth, async (req, res) => {
   try {
     const distinctCategories = await ProductCategory.distinct('productcategoryName');
     res.json({ categories: distinctCategories });
@@ -222,7 +222,7 @@ category.post("/add/subproductcategory",adminauth, async (req, res) => {
 
 });
 
-category.get("/subproductcategory", async (req, res) => {
+category.get("/subproductcategory",adminauth, async (req, res) => {
 try {
   const categories = await   ProductsubCategory.find();
   res.status(200).json(categories);
@@ -232,7 +232,7 @@ try {
 }
 });
 
-category.get("/subproductcategories/:id", async (req, res) => {
+category.get("/subproductcategories/:id",adminauth, async (req, res) => {
 const categoryId = req.params.id;
 try {
   const category = await ProductsubCategory.findById(categoryId);
@@ -246,7 +246,7 @@ try {
 }
 });
 
-category.get('/suballproductcategoies', async (req, res) => {
+category.get('/suballproductcategoies',adminauth, async (req, res) => {
   try {
 
     const distinctCategories = await  ProductsubCategory.distinct('subcategoriesname');
@@ -257,7 +257,7 @@ category.get('/suballproductcategoies', async (req, res) => {
   }
 });
 
-category.get('/subcategory/allproductcategoies', async (req, res) => {
+category.get('/subcategory/allproductcategoies',adminauth, async (req, res) => {
   try {
     const distinctCategories = await  ProductsubCategory.distinct('categoryName');
     res.json({ categories: distinctCategories });
@@ -267,7 +267,7 @@ category.get('/subcategory/allproductcategoies', async (req, res) => {
   }
 });
 
-category.get('/:category/allsubproductcategoies', async (req, res) => {
+category.get('/:category/allsubproductcategoies',adminauth, async (req, res) => {
   try {
     const category=req.params.category
     const distinctCategories = await ProductsubCategory.distinct('subcategoriesname', { categoryName: category });

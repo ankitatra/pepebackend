@@ -37,6 +37,8 @@ const blogcategorySchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+}, {
+  timestamps: true // Automatically add createdAt and updatedAt fields
 });
 const  BlogCategory = mongoose.model("blogCategory", blogcategorySchema);
 

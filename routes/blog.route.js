@@ -8,10 +8,10 @@ blog.post("/add/publish", adminauth, async (req, res) => {
   try {
     // Count the number of currently featured blogs
     const existingFeaturedBlogs = await Blog.countDocuments({ isFeatured: true });
-  
+     console.log(existingFeaturedBlogs)
     // Check if the limit of 4 featured blogs has been reached
-    if (existingFeaturedBlogs >= 4) {
-      return res.status(400).json({ error: "Maximum of 4 blogs can be featured. Please unfeature a blog to add a new one." });
+    if (existingFeaturedBlogs >= 4 && req.body.isFeatured==true) {
+      return res.status(409).json({ error: "Maximum of 4 blogs can be featured. Please unfeature a blog to add a new one." });
     }
 
     req.body.status = "publish";

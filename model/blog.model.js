@@ -44,6 +44,12 @@ const blogSchema = new mongoose.Schema({
     type: [String],
     required: true,
   },
+  alttag:{
+    type:String,
+    required: true,
+    unique: true,
+  },
+  
   comments: [
     {
       author: {
@@ -62,20 +68,20 @@ const blogSchema = new mongoose.Schema({
   ],
   metakeywords:{
     type:String,
-    // required: true,
+    required: true,
   },
   metatitle:{
     type:String,
     unique: true,
-    // required: true,
+    required: true,
   },
   metaDescription:{
     type:String,
-    // required: true,
+    required: true,
   },
   customUrl:{
     type:String,
-    // required: true,
+    required: true,
   },
   createdAt: {
     type: Date,
@@ -85,6 +91,15 @@ const blogSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+});
+
+blogSchema.pre("save", function (next) {
+  const now = new Date();
+  this.updatedAt = now;
+  if (!this.createdAt) {
+    this.createdAt = now;
+  }
+  next();
 });
 
 const Blog = mongoose.model("Blog", blogSchema);
